@@ -2,11 +2,6 @@ import  xlrd as xlsr
 from datetime import datetime,date,time
 import  xlwt as xlsw
 import openpyxl as  advRWE
-import re
-
-wb = advRWE.load_workbook(r'D:\11.xlsx')
-sheet =wb.active
-
 # c1=sheet.cell(sheet.max_row+1,1,'100')
 # wb.save(r'D:\11.xlsx')
 
@@ -14,8 +9,15 @@ sheet =wb.active
 操作Excel
 '''
 class operExcel:
-    #将excel封装成一个二位数组,暂时只支持xls
+
     def data2ArrFor2003(data,exl_sheet):
+        '''
+        将excel封装成一个二位数组,暂时只支持xls.
+        :param data excel的文件对象，用来解决Date的问题
+        :type workbook
+        :param exl_sheet exceld sheet对象
+        :type sheet
+        '''
         xlsArr = []
         tempCell = {}
         for row_index in range(exl_sheet.nrows):
@@ -44,9 +46,12 @@ class operExcel:
             xlsArr.append(rowArr)
         return xlsArr
 
-
-    # 将excel封装成一个二位数组,暂时只支持xlsx
     def data2ArrFor2007(exl_sheet):
+        '''
+        将excel封装成一个二位数组,暂时只支持xlsx.
+        :param exl_sheet exceld sheet对象
+        :type sheet
+        '''
         #将合并单元格的格子都赋值成一个值
         tempCell = {}
         for mergCells in exl_sheet.merged_cells:
