@@ -18,4 +18,6 @@
 # finally:
 #     print('jieshule')
 import  time
+print(time.localtime(time.time()))
 print(time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time())))
+print(str(1)+str(1))

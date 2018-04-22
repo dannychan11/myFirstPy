@@ -31,7 +31,7 @@ def change(n):
 
 #lock1 = threading.Lock()
 def run_thread(n,lock3):
-    for i in range(10):
+    for i in range(100000):
         #获取锁
         lock3.acquire()
         change(n)
