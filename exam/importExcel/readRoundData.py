@@ -15,7 +15,7 @@ sheet =wb.active
 '''
 class operExcel:
     #将excel封装成一个二位数组,暂时只支持xls
-    def data2Arr(data,exl_sheet):
+    def data2ArrFor2003(data,exl_sheet):
         xlsArr = []
         tempCell = {}
         for row_index in range(exl_sheet.nrows):
@@ -35,7 +35,7 @@ class operExcel:
                 else:
                     if exl_sheet.cell(row_index,
                                 col_index).ctype==3:
-                        date_value=xls.xldate_as_tuple(exl_sheet.cell(row_index,col_index).value,data.datemode)
+                        date_value=xlsr.xldate_as_tuple(exl_sheet.cell(row_index,col_index).value,data.datemode)
                         date_tmp=datetime(*date_value).strftime('%Y/%m/%d %H:%M:%S')
                         rowArr.append(date_tmp)
                     else:
@@ -46,7 +46,7 @@ class operExcel:
 
 
     # 将excel封装成一个二位数组,暂时只支持xlsx
-    def data2Arr(data,exl_sheet):
+    def data2ArrFor2007(exl_sheet):
         #将合并单元格的格子都赋值成一个值
         tempCell = {}
         for mergCells in exl_sheet.merged_cells:
