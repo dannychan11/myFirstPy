@@ -263,60 +263,78 @@ class studentGB(student):
 # print(list1)
 def sortList(inputS):
     list1 = inputS.split(',')
-    for i in range(0, len(list1)):
-        for t in range(i + 1, len(list1)):
-             if int(list1[t]) <= int(list1[i]):
-                    list1[i], list1[t] = list1[t], list1[i]
-    return list1
-inputStr = input('请输入至少5个数字用逗号隔开')
-#print(sortList(inputStr))
-result = []
-a = [1, 1, 0, 2, 2, 2, 4, 3, 3, 4, 2, 0, 0]
-start_num=0
-for x in range(start_num,len(a)) :
-    if x==start_num:
-        temp = []
-        temp.append(a[x])
-        for  y in range(x+1,len(a)):
-            if a[x]==a[y]:
-                temp.append(a[y])
-            else:
-                start_num=y
-                break
+    if len(list1)<5:
+        print('请输入以英文逗号分割的数字，至少5个')
     else:
-        continue
-    result.append(temp)
-#print(result)
-# def fgArr(arr):
-#     result = []
-#     x = 0
-#     while (x < len(a)):
-#         temp = []
-#         y = x + 1
-#         temp.append(a[x])
-#         while (y < len(a)):
-#             if (a[x] == a[y]):
-#                 temp.append(a[x])
-#                 y = y + 1
-#             else:
-#                 break
-#         x = y
-#         result.append(temp)
-#     return result
+        for i in range(0, len(list1)):
+            for t in range(i + 1, len(list1)):
+                try:
+                    if int(list1[t]) <= int(list1[i]):
+                        list1[i], list1[t] = list1[t], list1[i]
+                except Exception:
+                    return '请输入数字'
+        return list1
+#inputStr = input('请输入至少5个数字用逗号隔开')
+#print(sortList(inputStr))
+
+
+# for x in range(0,len(a)) :
+    # temp = []
+    # for  y in range(x+1,len(a)):
+    #     if a[x]==a[y]:
+    #         temp.append(a[y])
+    #     else:
+    #         temp.append(a[x])
+    #         break
+    # result.append(temp)
+
+def fgArr(arr):
+    result = []
+    x = 0
+    while (x < len(a)):
+        temp = []
+        y = x + 1
+        temp.append(a[x])
+        while (y < len(a)):
+            if (a[x] == a[y]):
+                temp.append(a[x])
+                y = y + 1
+            else:
+                break
+        x = y
+        result.append(temp)
+    return result
+def fgArr2(arr):
+    result = []
+    start_num = 0
+    for x in range(0,len(arr)):
+        if x==start_num:
+            temp=[]
+            temp.append(arr[x])
+            for y in range(x+1,len(arr)):
+                if arr[x]==arr[y]:
+                    temp.append(arr[y])
+                else:
+                    start_num=y
+                    break
+        else:
+            continue
+        result.append(temp)
+    return result
 a = [1, 1, 0, 2, 2, 2, 4, 3, 3, 4, 2, 0, 0]
-#print(fgArr(a))
+#print(fgArr2(a))
 def writeFile(filename):
     with open(filename, 'w+', encoding='utf-8') as files:
         while True:
             a=input('请输入文字，输入#停止输入')
             if len(a.split(r'#'))>=2:
-                files.write(a.split(r'#')[0])
+                files.write(a.split(r'#')[0]+'\n')
                 print('退出文本')
                 break
             else:
-                files.write(a)
+                files.write(a+'\n')
     files.close()
-#writeFile('a.txt')
+#writeSomeThing('bbb.txt')
 class classes:
     __num__=0
     xs=[]

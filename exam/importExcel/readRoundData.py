@@ -1,18 +1,14 @@
-import  xlrd as xlsr
-from datetime import datetime,date,time
-import  xlwt as xlsw
-import openpyxl as  advRWE
-# c1=sheet.cell(sheet.max_row+1,1,'100')
-# wb.save(r'D:\11.xlsx')
+import xlrd as xlsr
+from datetime import datetime
 
-'''
-操作Excel
-'''
-class operExcel:
 
-    def data2ArrFor2003(data,exl_sheet):
+# 操作数据
+class OperExcel:
+
+    def data2arr_for2003(workbook_data, exl_sheet):
         '''
         将excel封装成一个二位数组,暂时只支持xls.
+        :param self
         :param data excel的文件对象，用来解决Date的问题
         :type workbook
         :param exl_sheet exceld sheet对象 ，必须要formatting_info=True
@@ -27,29 +23,30 @@ class operExcel:
                     tempCell[str(firstStr) + str(sedStr)] = \
                         exl_sheet.cell(min_row, min_col).value
         for row_index in range(exl_sheet.nrows):
-            rowArr = []
+            rowarr = []
             for col_index in range(exl_sheet.ncols):
                 '''这里判断当前单元格是否为空，为空是就取上个单元格的值，如果上一个也没值就取上上个，
                 主要解决合并单元格的问题，但单元格本身为空时无法解决，下一次解决，xls是可以解决的
                 ，已经解决'''
                 if exl_sheet.cell(row_index,col_index).value=='':
                     if str(row_index)+str(col_index) in tempCell.keys():
-                        rowArr.append(tempCell.get(str(row_index)+str(col_index)))
+                        rowarr.append(tempCell.get(str(row_index)+str(col_index)))
                     else:
-                        rowArr.append('')
+                        rowarr.append('')
                 else:
                     if exl_sheet.cell(row_index,
                                 col_index).ctype==3:
-                        date_value=xlsr.xldate_as_tuple(exl_sheet.cell(row_index,col_index).value,data.datemode)
+                        date_value=xlsr.xldate_as_tuple(exl_sheet.cell(row_index,col_index).value,workbook_data.datemode)
                         date_tmp=datetime(*date_value).strftime('%Y/%m/%d %H:%M:%S')
-                        rowArr.append(date_tmp)
+                        rowarr.append(date_tmp)
                     else:
-                        rowArr.append(exl_sheet.cell(row_index,
+                        rowarr.append(exl_sheet.cell(row_index,
                                               col_index).value)
-            xlsArr.append(rowArr)
+            xlsArr.append(rowarr)
         return xlsArr
 
-    def data2ArrFor2007(exl_sheet):
+
+    def data2arr_for2007(exl_sheet):
         '''
         将excel封装成一个二位数组,暂时只支持xlsx.
         :param exl_sheet exceld sheet对象
@@ -68,27 +65,38 @@ class operExcel:
             for a in firRow:
                 counter += 1
             break
-        xlsArr = []
+        xlsarr = []
         for row_index in range(exl_sheet.max_row):
-            rowArr = []
+            rowarr = []
             #只取第一行的列数
             for clo_index in range(counter):
                 #下标从一开始所以都要加1
                 if exl_sheet.cell(row_index + 1, clo_index + 1).value is None:
                     if str(row_index) + str(row_index + 1) in tempCell.keys():
-                        rowArr.append(tempCell[str(row_index) + str(row_index + 1)])
+                        rowarr.append(tempCell[str(row_index) + str(row_index + 1)])
                     else:
-                        rowArr.append('')
+                        rowarr.append('')
                 else:
                     if isinstance(exl_sheet.cell(row_index + 1, clo_index + 1).value, datetime):
-                        rowArr.append(exl_sheet.cell(row_index + 1, clo_index + 1).value.strftime('%Y/%m/%d %H:%M:%S'))
+                        rowarr.append(exl_sheet.cell(row_index + 1, clo_index + 1).value.strftime('%Y/%m/%d %H:%M:%S'))
                     else:
-                        rowArr.append(exl_sheet.cell(row_index + 1, clo_index + 1).value)
-            xlsArr.append(rowArr)
-        return xlsArr
+                        rowarr.append(exl_sheet.cell(row_index + 1, clo_index + 1).value)
+            xlsarr.append(rowarr)
+        return xlsarr
 
-    # #在最后一行加一列
-    # def writeOneRow(self,exl_sheet,valuesArr):
-    #     exl_sheet
+    def write_onerow_for2007(workbook_data,filePath,exl_sheet,valuesArr):
+         '''
+         在excel文件的最后插入一行数据,
+         :param filePath: 文件路径
+         :type String
+         :param exl_sheet: excel的sheet对象
+         :param valuesArr: 需要插入的值数组
+         :return:true，flase
+         '''
+         for cell_index in range(1,len(valuesArr)+1):
+            exl_sheet.cell(exl_sheet.max_row + 1, cell_index, valuesArr[cell_index-1])
+         workbook_data.save(filePath)
+
+
 
 
