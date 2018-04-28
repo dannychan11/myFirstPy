@@ -9,13 +9,14 @@ import openpyxl as  advRWE
 '''
 data= None
 sheet= None
-filePath=r'D:\11.xlsx'
+filePath=r'D:\11.xls'
 if len(filePath.split(r'.'))>2:
     print('文件名非法%s'%filePath)
-elif filePath.split(r'.')=='xls':
+elif filePath.split(r'.')[1]=='xls':
     data = xlsr.open_workbook(filePath, formatting_info=True)
-    sheet= data.sheet_by_index(0)
+    exl_sheet= data.sheet_by_index(0)
+    print(opE.data2ArrFor2003(data,exl_sheet))
 else:
     data = advRWE.load_workbook(filePath)
     sheet=data.active
-print(opE.data2ArrFor2007(sheet))
+    print(opE.data2ArrFor2007(sheet))

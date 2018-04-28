@@ -15,25 +15,28 @@ class operExcel:
         将excel封装成一个二位数组,暂时只支持xls.
         :param data excel的文件对象，用来解决Date的问题
         :type workbook
-        :param exl_sheet exceld sheet对象
+        :param exl_sheet exceld sheet对象 ，必须要formatting_info=True
         :type sheet
         '''
         xlsArr = []
         tempCell = {}
+        for merged_cell in exl_sheet.merged_cells:
+            min_row, max_row, min_col, max_col = merged_cell
+            for firstStr in range(min_row, max_row ):
+                for sedStr in range(min_col, max_col):
+                    tempCell[str(firstStr) + str(sedStr)] = \
+                        exl_sheet.cell(min_row, min_col).value
         for row_index in range(exl_sheet.nrows):
             rowArr = []
             for col_index in range(exl_sheet.ncols):
                 '''这里判断当前单元格是否为空，为空是就取上个单元格的值，如果上一个也没值就取上上个，
-                主要解决合并单元格的问题，但单元格本身为空时无法解决，下一次解决，xls是可以解决的'''
+                主要解决合并单元格的问题，但单元格本身为空时无法解决，下一次解决，xls是可以解决的
+                ，已经解决'''
                 if exl_sheet.cell(row_index,col_index).value=='':
-                    if str(row_index-1)+str(col_index) in tempCell.keys():
-                        tempCell[str(row_index) + str(col_index)] = tempCell.get(str(row_index-1) + str(col_index))
+                    if str(row_index)+str(col_index) in tempCell.keys():
                         rowArr.append(tempCell.get(str(row_index)+str(col_index)))
                     else:
-                        tempCell[str(row_index)+str(col_index)]= exl_sheet.cell(row_index-1,
-                                                         col_index).value
-                        rowArr.append(exl_sheet.cell(row_index-1,
-                                                         col_index).value)
+                        rowArr.append('')
                 else:
                     if exl_sheet.cell(row_index,
                                 col_index).ctype==3:
@@ -52,12 +55,13 @@ class operExcel:
         :param exl_sheet exceld sheet对象
         :type sheet
         '''
-        #将合并单元格的格子都赋值成一个值
+        #将合并单元格的格子都赋值成一个值，先存到一个字典中
         tempCell = {}
         for mergCells in exl_sheet.merged_cells:
             for firstStr in range(mergCells.min_row, mergCells.max_row + 1):
                 for sedStr in range(mergCells.min_col, mergCells.max_col + 1):
-                    tempCell[str(firstStr) + str(sedStr)] = exl_sheet.cell(mergCells.min_row, mergCells.min_col).value
+                    tempCell[str(firstStr) + str(sedStr)] = \
+                        exl_sheet.cell(mergCells.min_row, mergCells.min_col).value
         # 计算出第一行的列数，按此列数循环
         counter = 0
         for firRow in exl_sheet.rows:
@@ -73,6 +77,8 @@ class operExcel:
                 if exl_sheet.cell(row_index + 1, clo_index + 1).value is None:
                     if str(row_index) + str(row_index + 1) in tempCell.keys():
                         rowArr.append(tempCell[str(row_index) + str(row_index + 1)])
+                    else:
+                        rowArr.append('')
                 else:
                     if isinstance(exl_sheet.cell(row_index + 1, clo_index + 1).value, datetime):
                         rowArr.append(exl_sheet.cell(row_index + 1, clo_index + 1).value.strftime('%Y/%m/%d %H:%M:%S'))
