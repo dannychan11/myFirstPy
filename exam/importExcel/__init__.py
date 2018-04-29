@@ -1,1 +1,1 @@
-__all__=['readRoundData']
+__all__=['operexcel.py']

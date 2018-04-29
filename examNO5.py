@@ -380,3 +380,5 @@ class xs(classes):
 # class1.addPerson(joe)
 # class1.addPerson(susan)
 # class1.getRS()
+a=...
+print(a)
