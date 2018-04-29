@@ -380,5 +380,63 @@ class xs(classes):
 # class1.addPerson(joe)
 # class1.addPerson(susan)
 # class1.getRS()
-a=...
-print(a)
+# for i,j in enumerate('abcde'):
+#     print(i,j)
+from collections import Counter
+#print(Counter(s=3, c=2, e=1, u=1))  #转字典
+# 通过键索引来追踪元素
+from collections import defaultdict
+
+s = "the quick brown fox jumps over the lazy dog"
+
+words = s.split()
+location = defaultdict(list)
+for m, n in enumerate(words):
+    location[n].append(m)
+print(location)
+foo = [2, 18, 9, 22, 17, 24, 8, 12, 27]
+print(filter(lambda x: x % 3 == 0, foo))
+print(map(lambda x: x * 2 + 10, foo))
+from functools import reduce
+print(reduce(lambda x, y: x + y, foo))
+print([x * 2 + 10 for x in foo])
+foo = [2, 18, 9, 22, 17, 24, 8, 12, 27]
+print(['>3' if i>3 else '<3' for i in foo])
+t=map(lambda x:'<3' if x<3 else '>3',foo)
+print(t)
+'''
+所以如果实际过程中需要保留原有列表，可以使用sorted()。sort()不需要复制原有列表，消耗内存较小，效率较高。
+同时传入参数key比传入参数cmp效率要高，cmp传入的函数在整个排序过程中会调用多次，而key针对每个元素仅作一次处理。
+善用traceback 追踪深层错误
+import traceback
+
+try:
+    do something
+except Exception as ex:
+    print ex
+    traceback.print_exc()
+    
+with open('path') as f:
+    for line in f:
+        do songthing
+
+# for line in f 这种用法是把文件对象f当作迭代对象，系统将自动处理IO缓存和内存管理。对于读取超大的文件，
+这个方法不会把内存撑爆，这个是按行读取的
+
+with open('path') as f:
+    for line in f.readlines():
+        do something
+
+# 这个方法是将文本中的内容都放在了一个列表里，然后进行迭代，对于大量的数据而言，效果不好
+'''
+# 输入一个字符串,按字典序打印出该字符串中字符的所有排列。例如输入字符串abc,则打印出由字符a,b,c所能排列出来的所有字符串abc,acb,bac,bca,cab和cba
+# itertools，内建库的用法
+# 参考：http://blog.csdn.net/neweastsun/article/details/51965226
+import itertools
+def Permutation(ss):
+    # write code here
+    if not ss:
+        return []
+    return sorted(list(set(map(lambda x:''.join(x), itertools.permutations(ss)))))
+Permutation('abc')
+# ['abc', 'acb', 'bac', 'bca', 'cab', 'cba']

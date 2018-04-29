@@ -135,6 +135,7 @@ class FileNamedError(Exception):
 
 
 if __name__ == '__main__':  # 此为测试方法
+    pyline
     file_path_test = r'D:\11.xls'
     if len(file_path_test.split(r'.')) > 2:
         raise FileNamedError('文件名非法%s' % file_path_test)
